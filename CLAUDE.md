@@ -10,8 +10,6 @@ Remember, the primary goal here is me learning how differen `content.config.ts` 
 
 ## Guidance for Claude
 
-Check `instructions.md` for the next tasks.
-
 When working in this repository:
 
 - Assume that we only care about Astro > 5.0 for now (content collections work quite differently in older versions)

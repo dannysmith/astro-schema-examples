@@ -1,7 +1,3 @@
-# Task 1
-
-I want to create an extremely basic astro site like a blog with one simple content collection that is extremely simple and stripped back for blog articles. Then I want to astro build so that I can compare this extremely minimal version with the generated JSON version.
-
 # Future Tasks
 
 - Basic Starlight Schema (straight from template)
