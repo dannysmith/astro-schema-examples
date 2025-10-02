@@ -1,0 +1,112 @@
+{
+  "$ref": "#/definitions/articles",
+  "definitions": {
+    "articles": {
+      "type": "object",
+      "properties": {
+        "priority": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "published",
+            "archived"
+          ]
+        },
+        "category": {
+          "type": "string",
+          "enum": [
+            "technology",
+            "design",
+            "business",
+            "lifestyle"
+          ]
+        },
+        "seo": {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string",
+              "minLength": 5,
+              "maxLength": 120
+            },
+            "description": {
+              "type": "string",
+              "minLength": 15,
+              "maxLength": 160
+            }
+          },
+          "required": [
+            "title",
+            "description"
+          ],
+          "additionalProperties": false
+        },
+        "author": {
+          "type": "string",
+          "default": "System"
+        },
+        "title": {
+          "type": "string",
+          "description": "The main title of the article",
+          "markdownDescription": "The main title of the article"
+        },
+        "content": {
+          "type": "string",
+          "description": "The full article content in markdown",
+          "markdownDescription": "The full article content in markdown"
+        },
+        "publishDate": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "integer",
+              "format": "unix-time"
+            }
+          ],
+          "description": "When this article was first published",
+          "markdownDescription": "When this article was first published"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "errorMessage": {
+            "minItems": "At least one tag is required"
+          }
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "priority",
+        "status",
+        "category",
+        "seo",
+        "title",
+        "content",
+        "publishDate",
+        "tags"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

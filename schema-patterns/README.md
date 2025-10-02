@@ -4,40 +4,51 @@
 pnpm create astro@latest -- --template minimal
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Schema Patterns Example (PRIORITY)
 
-## 🚀 Project Structure
+Create a new example site called `schema-patterns` to test how Astro's JSON schema generation handles JavaScript patterns commonly used in real-world configs (like astro.build).
 
-Inside of your Astro project, you'll see the following folders and files:
+**Goal**: Understand if/how Astro inlines module-level JavaScript into generated JSON schemas.
 
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+**Specific tests needed**:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+1. **Constants in enums (same file)**
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+   - Define `const STATUSES = ['draft', 'published', 'archived'] as const`
+   - Use: `status: z.enum(STATUSES)`
+   - Check: Does JSON contain literal values or a reference?
 
-Any static assets, like images, can be placed in the `public/` directory.
+2. **Imported constants from external file**
 
-## 🧞 Commands
+   - Create `src/constants.ts` with exported constant array
+   - Import and use in enum/union
+   - Check: Does this work? Do values appear in JSON?
 
-All commands are run from the root of the project, from a terminal:
+3. **Reusable schema fragments**
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
+   - Define `const seoSchema = z.object({ title: z.string().min(5).max(120), description: z.string() })`
+   - Use via `.merge(seoSchema)` in multiple collections
+   - Check: Is schema duplicated or referenced in JSON?
 
-## 👀 Want to learn more?
+4. **Computed/derived default values**
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+   - Define: `const DEFAULT_AUTHOR = 'System'`
+   - Use: `author: z.string().default(DEFAULT_AUTHOR)`
+   - Check: Does JSON show "System" or a reference?
+
+5. **Descriptions on fields**
+
+   - Use `.describe('This is a title field')` on multiple fields
+   - Check: Do descriptions appear in JSON schema (as `description` property)?
+
+6. **Custom refinements/validations**
+   - Use `.refine(val => val.length > 0, 'Must not be empty')`
+   - Check: How does this appear in JSON? Is it lost?
+
+**What we're learning**:
+
+- Whether Astro fully evaluates JS before generating JSON (likely yes)
+- How to handle configs that aren't simple inline Zod calls
+- If there are any edge cases where JS patterns break JSON generation
+
+**Site structure**: Minimal Astro site, one collection, focus entirely on the config.ts patterns
