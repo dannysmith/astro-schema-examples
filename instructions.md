@@ -1,99 +1,44 @@
 # Future Tasks
 
-- Basic Starlight Schema (straight from template)
-- A site with has many content colelctions using every available basic feature of zod in Astro, with the glob loader, including at least one which references other content colelctions.
-- Some super complex schema like https://github.com/withastro/astro.build/blob/main/src/content/config.ts
+## Schema Patterns Example (PRIORITY)
 
----
+Create a new example site called `schema-patterns` to test how Astro's JSON schema generation handles JavaScript patterns commonly used in real-world configs (like astro.build).
 
-## Comprehensive Zod Features Example Site Plan
+**Goal**: Understand if/how Astro inlines module-level JavaScript into generated JSON schemas.
 
-### Purpose
-Create a multi-collection site that demonstrates how Astro transforms various Zod schema features into JSON Schema. This will serve as a reference for understanding the mapping between `content.config.ts` and generated `.schema.json` files.
+**Specific tests needed**:
 
-### Collections to Create
+1. **Constants in enums (same file)**
+   - Define `const STATUSES = ['draft', 'published', 'archived'] as const`
+   - Use: `status: z.enum(STATUSES)`
+   - Check: Does JSON contain literal values or a reference?
 
-#### 1. **Blog Collection** (expanded from minimal-blog)
-Features to demonstrate:
-- `z.string()` - basic required string (title)
-- `z.string().optional()` - optional string with no default (subtitle)
-- `z.string().default("Anonymous")` - string with default (author fallback)
-- `z.string().email()` - email validation (contactEmail)
-- `z.string().url()` - URL validation (canonicalUrl)
-- `z.string().min(10).max(200)` - string with length constraints (description)
-- `z.date()` - required date (publishDate)
-- `z.date().optional()` - optional date (updatedDate)
-- `z.boolean()` - required boolean (isDraft)
-- `z.boolean().default(false)` - boolean with default (featured)
-- `z.number()` - basic number (readingTime)
-- `z.number().int().positive().optional()` - constrained optional number (viewCount)
-- `z.enum(["draft", "published", "archived"])` - enum values (status)
-- `z.array(z.string())` - simple string array (tags)
-- `z.array(z.string()).min(1).max(5)` - constrained array (categories)
-- `reference('authors')` - collection reference (primaryAuthor)
+2. **Imported constants from external file**
+   - Create `src/constants.ts` with exported constant array
+   - Import and use in enum/union
+   - Check: Does this work? Do values appear in JSON?
 
-#### 2. **Authors Collection**
-Features to demonstrate:
-- `z.string()` - required string (name)
-- `z.string().min(50)` - constrained string (bio)
-- `z.string().email()` - email validation (email)
-- `z.string().url().optional()` - optional URL (website)
-- `image()` - local image reference (avatar)
-- `image().optional()` - optional image (coverPhoto)
-- Nested object with `z.object()` - social links structure (twitter, github, etc.)
-- `z.array(z.object({...}))` - array of nested objects (links: url, title, description)
-- `z.record(z.string())` - key-value pairs for custom metadata
-- `z.number().int().min(0).default(0)` - number with default (postCount)
+3. **Reusable schema fragments**
+   - Define `const seoSchema = z.object({ title: z.string().min(5).max(120), description: z.string() })`
+   - Use via `.merge(seoSchema)` in multiple collections
+   - Check: Is schema duplicated or referenced in JSON?
 
-#### 3. **Projects Collection**
-Features to demonstrate:
-- `z.literal()` - literal values
-- `z.union()` - union types
-- `z.tuple()` - tuple types
-- `z.array(reference('blog'))` - array of references
-- `z.discriminatedUnion()` - discriminated unions
-- `z.coerce.date()` - date coercion
-- `.transform()` - custom transformations
-- Complex nested objects
+4. **Computed/derived default values**
+   - Define: `const DEFAULT_AUTHOR = 'System'`
+   - Use: `author: z.string().default(DEFAULT_AUTHOR)`
+   - Check: Does JSON show "System" or a reference?
 
-#### 4. **Documentation Collection** (using file loader with JSON)
-Features to demonstrate:
-- How `file()` loader with JSON maps to schema
-- Different structure than glob-based collections
-- Nested object schemas
+5. **Descriptions on fields**
+   - Use `.describe('This is a title field')` on multiple fields
+   - Check: Do descriptions appear in JSON schema (as `description` property)?
 
-### Key Learning Objectives
+6. **Custom refinements/validations**
+   - Use `.refine(val => val.length > 0, 'Must not be empty')`
+   - Check: How does this appear in JSON? Is it lost?
 
-1. **Type Transformations**: How does `z.date()` become the anyOf date formats in JSON Schema?
-2. **Validation Mapping**: How do `.min()`, `.max()`, `.email()`, `.url()` map to JSON Schema validation?
-3. **Defaults & Optionals**: How are `.optional()` and `.default()` represented?
-4. **References**: How does `reference()` transform in the JSON Schema?
-5. **Images**: How does the `image()` helper map to JSON Schema?
-6. **Complex Types**: How do unions, tuples, records, and nested objects transform?
-7. **Enums**: How are `z.enum()` values represented?
-8. **Arrays**: How are typed arrays with constraints mapped?
-9. **Custom Transforms**: Do `.transform()` functions affect the JSON Schema?
+**What we're learning**:
+- Whether Astro fully evaluates JS before generating JSON (likely yes)
+- How to handle configs that aren't simple inline Zod calls
+- If there are any edge cases where JS patterns break JSON generation
 
-### Implementation Approach
-
-1. Create `comprehensive-schemas/` directory
-2. Initialize minimal Astro 5.0+ project (no template, just basics)
-3. Create four content collections with varied schemas
-4. Add minimal sample content for each collection
-5. Run `astro build` to generate `.schema.json` files
-6. Document findings: what Zod features map to what JSON Schema structures
-
-### Why This Matters
-
-The generated JSON Schema files are the key to building a robust GUI editor because:
-- They're generated by Astro's own schema compiler (authoritative)
-- They handle edge cases and complex transformations we might miss
-- They include validation rules in a standardized format
-- They work for ANY Astro site, including those using imported schemas (like Starlight)
-- They provide a stable API even if the Zod schema uses complex TypeScript patterns
-
-By understanding this transformation deeply, we can build an editor that:
-- Doesn't need to parse Zod directly (which is fragile)
-- Supports all Astro features automatically
-- Handles imported schemas and extended types
-- Provides correct validation in the UI
+**Site structure**: Minimal Astro site, one collection, focus entirely on the config.ts patterns
