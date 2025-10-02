@@ -1,4 +1,4 @@
-# Claude Instructions: Astro Scema Examples
+# Claude Instructions: Astro Schema Examples
 
 This repository contains a number of minimal Astro implementations, with a variety of different content collection schemas in their `content.config.ts`. This is intended solely for help with testing and developing [Astro Editor](https://astroeditor.danny.is/)
 
@@ -15,6 +15,8 @@ Check `instructions.md` for the next tasks.
 When working in this repository:
 
 - Assume that we only care about Astro > 5.0 for now (content collections work quite differently in older versions)
+- **IMPORTANT**: Content collection configuration should be in `src/content.config.ts` (not `src/content/config.ts`). This is the current best practice as of recent Astro versions.
+- Always use the latest Astro documentation and best practices when creating content collection schemas.
 - Create any new astro projects in their own directory in the root.
 - When creating new astro projects from an online template, just generate a basic site from that template and change as little as possible.
 - When creating new example sites (not from a template) keep them as simplistic as possile. There should never be any need for any CSS or other boilerplate for example.
