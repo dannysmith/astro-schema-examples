@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content'
+
+const posts = await getCollection('blog')
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Minimal Blog</title>
+  </head>
+  <body>
+    <h1>Blog Posts</h1>
+    <ul>
+      {
+        posts.map((post) => (
+          <li>
+            <strong>{post.data.title}</strong> -{' '}
+            {post.data.date.toLocaleDateString()} - {post.data.description}
+          </li>
+        ))
+      }
+    </ul>
+  </body>
+</html>
