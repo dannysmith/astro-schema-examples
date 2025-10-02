@@ -1,0 +1,25 @@
+[
+  {
+    "id": "getting-started",
+    "title": "Getting Started",
+    "section": "Introduction",
+    "order": 1,
+    "content": {
+      "summary": "Learn the basics of using this tool",
+      "details": "This guide will walk you through the initial setup and configuration process.",
+      "examples": ["npm install", "npm run dev"]
+    },
+    "lastUpdated": 1705276800000
+  },
+  {
+    "id": "advanced-usage",
+    "title": "Advanced Usage",
+    "section": "Guides",
+    "order": 2,
+    "content": {
+      "summary": "Advanced features and techniques",
+      "details": "Explore advanced configuration options and optimization strategies."
+    },
+    "lastUpdated": 1706745600000
+  }
+]
