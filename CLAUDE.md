@@ -19,9 +19,15 @@ When working in this repository:
 - When creating new astro projects from an online template, just generate a basic site from that template and change as little as possible.
 - When creating new example sites (not from a template) keep them as simplistic as possile. There should never be any need for any CSS or other boilerplate for example.
 
+## Example Sites
+
+- **`minimal-blog/`** - Basic blog with simple Zod schemas (title, description, date, tags)
+- **`schema-patterns/`** - Demonstrates various Zod schema patterns (nested objects, arrays, unions, enums)
+- **`comprehensive-schemas/`** - Complex schemas with advanced Zod features (transforms, refinements, optional fields)
+- **`starlight-minimal/`** - Minimal Starlight documentation site using imported loaders and schemas from `@astrojs/starlight`
+
 ## Reference
 
 - Astro Content Collections Guide: https://docs.astro.build/en/guides/content-collections/
 - Astro Content Collections API Docs: https://docs.astro.build/en/reference/modules/astro-content/
 - Astro Content Loader API Docs: https://docs.astro.build/en/reference/content-loader-reference/#built-in-loaders
--
