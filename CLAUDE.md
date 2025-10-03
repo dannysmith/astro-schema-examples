@@ -25,6 +25,7 @@ When working in this repository:
 - **`schema-patterns/`** - Demonstrates various Zod schema patterns (nested objects, arrays, unions, enums)
 - **`comprehensive-schemas/`** - Complex schemas with advanced Zod features (transforms, refinements, optional fields)
 - **`starlight-minimal/`** - Minimal Starlight documentation site using imported loaders and schemas from `@astrojs/starlight`
+- **`articles-notes/`** - Two collections (articles and notes) with glob loaders, image fields, enums, and URL validation
 
 ## Reference
 

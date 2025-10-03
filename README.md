@@ -10,3 +10,4 @@ This is intended solely for help with testing and developing [Astro Editor](http
 - **`schema-patterns/`** - Demonstrates various Zod schema patterns (nested objects, arrays, unions, enums)
 - **`comprehensive-schemas/`** - Complex schemas with advanced Zod features (transforms, refinements, optional fields)
 - **`starlight-minimal/`** - Minimal Starlight documentation site using imported loaders and schemas from `@astrojs/starlight`
+- **`articles-notes/`** - Two collections (articles and notes) with glob loaders, image fields, enums, and URL validation
